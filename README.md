@@ -1,97 +1,123 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# GamesShow App
 
-# Getting Started
+A React Native mobile application for tracking upcoming and in-progress games, making predictions, and viewing user profiles.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+-   **Games Dashboard:** Displays a list of games, filterable by status (Upcoming, Live, Completed).
+-   **Game Detail Screen:** Detailed view of selected games, including team info, odds, and a simple prediction interface.
+-   **User Profile:** Shows prediction history, win/loss record, and virtual balance.
+-   **Mock Backend:** A simple Node.js Express server to simulate game data and prediction processing with persistence.
+-   **Persistent Data:** User predictions and balance are saved locally on the mock backend.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Technical Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+-   **Frontend:** React Native (CLI Project)
+-   **Navigation:** React Navigation (Stack and Bottom Tabs)
+-   **State Management:** React Context API
+-   **Local Persistence (Backend):** File System (JSON file)
+-   **Backend (Mock API):** Node.js, Express, CORS
+-   **UI Components:** Custom components for GameCard, PredictionForm.
+-   **Icons:** React Native Vector Icons (using custom images for tabs).
 
-```sh
-# Using npm
-npm start
+## Setup Instructions
 
-# OR using Yarn
-yarn start
+Follow these steps to get the project up and running on your local machine.
+
+### Prerequisites
+
+*   Node.js (LTS version recommended)
+*   npm (comes with Node.js)
+*   React Native CLI ([Installation Guide](https://reactnative.dev/docs/environment-setup))
+*   Xcode (for iOS development on macOS)
+*   iOS Simulator or a physical iOS device
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Abhishekabrwar90/gameDemo.git
+cd GamesShow
 ```
 
-## Step 2: Build and run your app
+### 2. Install Frontend Dependencies
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+Navigate to the project root and install JavaScript dependencies:
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```bash
+npm install
 ```
 
-### iOS
+### 3. Install iOS Pods
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+Navigate to the `ios` directory and install CocoaPods dependencies:
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```bash
+cd ios
+pod install
+cd .. # Go back to the project root
 ```
 
-Then, and every time you update your native dependencies, run:
+### 4. Setup and Run the Mock Backend Server
 
-```sh
-bundle exec pod install
+Navigate to the `api` directory, install its dependencies, and start the server:
+
+```bash
+cd api
+npm install express cors # Install backend specific dependencies
+node server.js
+```
+The mock API will run on `http://localhost:4000`. Keep this terminal window open.
+
+### 5. Run the React Native App
+
+Open a **new** terminal window, navigate to the project root (`cd GamesShow` if you are not already there), and start the Metro bundler with a clean cache:
+
+```bash
+npm start --reset-cache
+```
+Keep this terminal window open.
+
+### 6. Launch the iOS App
+
+Open yet another terminal window (or use the one from step 2), navigate to the project root, and run the app on an iOS simulator:
+
+```bash
+npx react-native run-ios
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Troubleshooting
 
-```sh
-# Using npm
-npm run ios
+*   **"No script URL provided" / Metro Bundler issues:** Ensure `npm start --reset-cache` is running in a separate terminal.
+*   **CocoaPods errors:** Try `cd ios && rm -rf Pods Podfile.lock && pod install --repo-update && cd ..`
+*   **"Element type is invalid" / Module not found:** Check your `import` and `export` statements for custom components. Ensure `npm install` and `pod install` have been run successfully.
+*   **Backend "ENOENT" error:** Make sure `sample-games-simplified.json` is in the `api` directory.
+*   **Custom icons not showing:** Perform a full clean (`watchman watch-del-all`, `npm cache clean --force`, `rm -rf node_modules`, `npm install`, `cd ios && rm -rf Pods Podfile.lock && pod install --repo-update && cd ..`, then `npm start --reset-cache` and `npx react-native run-ios`).
 
-# OR using Yarn
-yarn ios
-```
+---
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## **2. Brief Demo (2-3 minutes)**
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### **A. Screen Recording**
+*   Use QuickTime Player on macOS (File > New Screen Recording).
+*   On iOS simulator, use the built-in screen recording feature (Control Center).
+*   Demonstrate:
+    *   Loading the app (show dashboard).
+    *   Filtering games by status (Upcoming, Live, Completed).
+    *   Navigating to a **Game Detail Screen**.
+    *   Making a **prediction** on an upcoming game.
+    *   Navigating to the **User Profile** screen to show prediction history and balance.
+    *   *Optional:* Show how game scores update on the dashboard over time (due to backend simulation) and how predictions are resolved on the profile.
 
-## Step 3: Modify your app
+### **B. Brief Explanation of Technical Approach**
+*   You can verbally explain this during the screen recording, or provide a separate short text/audio/video file.
+*   Key points to cover:
+    *   **React Native CLI:** How the project is set up without Expo.
+    *   **React Navigation:** How stack and bottom tab navigators are used.
+    *   **React Context:** Why it's used for global state management (games, user, loading, errors) and how it centralizes data logic.
+    *   **Mock Backend (Node.js/Express):** How it simulates game data and prediction processing, including persistence to a JSON file.
+    *   **Reusable Components:** Briefly mention `GameCard` and `PredictionForm`.
+    *   **Data Flow:** Explain how the frontend talks to the mock backend via `mockApi.js` and how data updates are handled (including polling for game/user data).
 
-Now that you have successfully run the app, let's make changes!
+---
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Let me know if you have any questions about these steps or if you'd like me to provide more detail on any specific part!
